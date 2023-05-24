@@ -59,7 +59,7 @@ function Router() {
             <Route path="/" element = {<WelcomePage />}/>
             <Route path='/auth/:params' element= {<LoginPage />}/>
             {/* <Route path='/sign-up' element={<SignUp />}/> */}
-            <Route path={'/chat'} element={<PrivateRoute setHistory={setHistory} next_page_url={next_page_url} Add_History={get_next_page_histoty} getHistorys ={getHistorys} History={History} element={Main}/>}>
+            <Route path='/chat' element={<PrivateRoute setHistory={setHistory} next_page_url={next_page_url} Add_History={get_next_page_histoty} getHistorys ={getHistorys} History={History} element={Main}/>}>
                  <Route path='/chat/' element={<Welcome Add_History={Add_History} getHistorys ={getHistorys}/>} />
                  <Route path='/chat/history/:id' element={<ProtectRoute element={ChatContainer}/>} />
             </Route>

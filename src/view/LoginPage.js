@@ -3,8 +3,8 @@ import "./Login.scss";
 // import { Routes, Route, Link } from "react-router-dom";
 import { useNavigate, useLocation, useParams, useHistory, Navigate} from "react-router-dom";
 import Logo from "../assets/logo.svg";
-import Username from "../assets/user-octagon.svg";
-import Password from "../assets/frame.svg";
+// import Username from "../assets/user-octagon.svg";
+// import Password from "../assets/frame.svg";
 import { Login, Register } from "../service/AuthService";
 import Typed from "typed.js";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,8 +22,8 @@ const Welcome = () => {
   });
   return (
     <>
-      <div style={{ animation: "rotateIn 0.5s" }} className="welcome-logo">
-        <img src={Logo}></img>
+      <div className="welcome-logo">
+        <img style={{ animation: "rotateIn 0.5s" }} src={Logo}></img>
       </div>
       <div className="welcome-text" ref={el}></div>
     </>
