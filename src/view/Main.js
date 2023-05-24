@@ -9,21 +9,20 @@ import {
   updateHistory,
 } from "../service/historyService";
 const Main = (props) => {
-  console.log(props.History.current);
   const navigate = useNavigate();
   const [ArrHistory, setArrHistory] = useState("");
   const [ID] = useState(localStorage.getItem("user_i"));
   const [InputEdit, setInputEdit] = useState("");
   const [IsEdit, setIsEdit] = useState(false);
-  const getHistorys = async () => {
-    let rp = await getHistory(ID);
-    setArrHistory(rp);
-    console.log(rp);
-  };
+  // const getHistorys = async () => {
+  //   let rp = await getHistory(ID);
+  //   setArrHistory(rp);
+  //   console.log(rp);
+  // };
   useEffect(() => {
     // getPeople();
 
-    getHistorys();
+    // getHistorys();
     const SpeechRecognition =
       window.SpeechRecognition ||
       window.webkitSpeechRecognition ||
@@ -49,7 +48,7 @@ const Main = (props) => {
 
   // getHistorys();
   function handleClick(id) {
-    navigate(`/history/${id}`);
+    navigate(`/chat/history/${id}`);
   }
   const [recognition, setRecognition] = useState(null);
   const closeMenu = () => {
@@ -87,6 +86,16 @@ const Main = (props) => {
     if(rp){
       setIsEdit(false)
       props.getHistorys()
+    }
+  }
+  const handleScroll = (event) => {
+    const target = event.target;
+    // console.log(target.scrollHeight - target.scrollTop)
+    // console.log(target.clientHeight)
+    if (target.scrollHeight - target.scrollTop === target.clientHeight) {
+      // Đã cuộn tới cuối, xử lý tại đây
+      // console.log('a');
+      props.Add_History()
     }
   }
   return (
@@ -127,7 +136,7 @@ const Main = (props) => {
                 />
               </div>
               <div className="btn">
-                <Link to={"/"}>
+                <Link to={"/chat"}>
                   <button className="btn-add">
                     Thêm đoạn chat <i className="fa-solid fa-plus"></i>
                   </button>
@@ -137,11 +146,9 @@ const Main = (props) => {
             <div style={{ width: 266 }}>
               <p>History</p>
             </div>
-            <div className="history-list">
+            <div className="history-list" onScroll={handleScroll}>
               {props.History &&
-                props.History.slice()
-                  .reverse()
-                  .map((item, index) => {
+                props.History.map((item, index) => {
                     const check = item._id == window.location.href.split("/").pop();
                     const classes = check ? "btn-active" : "btn";
                     return (
@@ -190,19 +197,19 @@ const Main = (props) => {
                               {
                                 IsEdit ? (
                                   <>
-                                    <i onClick={()=>{UpdateName(item._id)}}  class="fa-solid fa-check"></i>
-                                    <i onClick={()=>{setIsEdit(false)}} class="fa-solid fa-xmark"></i>
+                                    <i onClick={()=>{UpdateName(item._id)}}  className="fa-solid fa-check"></i>
+                                    <i onClick={()=>{setIsEdit(false)}} className="fa-solid fa-xmark"></i>
                                   </>
                                 ) :
                                 (
                                   <>
-                                  <i class="fa-sharp fa-solid fa-pen" onClick={()=>{handleClickEdit(item.title)}}></i>
+                                  <i className="fa-sharp fa-solid fa-pen" onClick={()=>{handleClickEdit(item.title)}}></i>
                                   <i
                                     onClick={() => {
                                       deleteHistory(item._id)
                                         .then((res) => {
-                                          props.getHistorys();
-                                          navigate("/");
+                                          props.setHistory(props.History.filter(history => history._id !== item._id));
+                                          navigate("/chat");
                                         })
                                         .catch((e) => console.log(e));
                                     }}
@@ -257,11 +264,7 @@ const Main = (props) => {
           </div>
         </div>
         <div className="col-10">
-          {/* <Welcome /> */}
           <Outlet></Outlet>
-          {/* <ChatContainer 
-                History_id={IDHistory}
-            /> */}
         </div>
         <div className="bg-menu"></div>
       </div>

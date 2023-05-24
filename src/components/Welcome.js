@@ -43,7 +43,7 @@ export default function (props) {
 
         let response = await createHistory({title: InputChat, user_id: ID})
         let rp1 = await createQuestion({
-          history_id: response.id,
+          history_id: response._id,
           content: InputChat,
           answer: InputChat,
           url_audio_content: res.data.data.url,
@@ -51,8 +51,8 @@ export default function (props) {
         })
         if(response){
           setInputChat('')
-          props.getHistorys();
-          navigate("/history/"+response.id)
+          props.Add_History(response);
+          navigate("/chat/history/"+response._id)
         }
       }).catch(e => console.log(e))
   }

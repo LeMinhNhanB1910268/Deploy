@@ -37,7 +37,7 @@ export default function WelcomePage() {
           <p>Log in with your OpenAI account to continue</p>
           <div className='group-btn'>
 
-            <Link to={{pathname: '../auth/SignUp',
+            <Link to={{pathname: '../auth/Signup',
                       }}>
               <button>Sign Up</button>
             </Link>

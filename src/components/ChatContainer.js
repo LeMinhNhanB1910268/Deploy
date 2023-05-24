@@ -13,9 +13,10 @@ export default function ChatContainer(props) {
   const textRef1 = useRef(null);
   const [question, setQuestion] = useState('')
   const [InputChat, setInputChat] = useState('');
+  const [next_page_url,setNextPageUrl] = useState('');
   const [recognition, setRecognition] = useState(null);
   const params = useParams();
-  const [ID] = useState(localStorage.getItem('userID'))
+  // const [ID] = useState(localStorage.getItem('userID'))
   const [IsCopy, setIsCopy] = useState(false);
   const { id } = params;
   // console.log(id);
@@ -26,14 +27,11 @@ export default function ChatContainer(props) {
   }, [question])
   useEffect(() => { 
     if (id) {
-      getAHistory();
+      // getAHistory();
       getChat();
     }
   }, [id])
-  useEffect(() => {
-    // Truyền giá trị param lên ref
-    props.handleChildParam(params);
-  }, [props.handleChildParam, params]);
+
   useEffect(()=>{
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition;
   
@@ -52,15 +50,12 @@ export default function ChatContainer(props) {
 
     setRecognition(recognitionInstance);
   },[])
-  const getAHistory = async () => {
-    // console.log('ID', id)
-    let rp = await getQuestion(id)
-    console.log('ahuuh', rp)
-  }
   const getChat = async () => {
     let rp = await getQuestion(id);
-    setQuestion(rp)
-    console.log(rp);
+    setQuestion(rp.data)
+    if(rp.url_next_page !== null)
+    setNextPageUrl(rp.url_next_page.replace('http://', 'https://'))
+    else setNextPageUrl(null)
   }
  
   const playAudio = (url) => {
@@ -69,7 +64,6 @@ export default function ChatContainer(props) {
   };
   const handleSendChat = async () => {
     const text = InputChat;
-    
     const formdata = new URLSearchParams()
     formdata.append('input', text)
     axios.post('https://api.zalo.ai/v1/tts/synthesize', formdata,
@@ -78,7 +72,6 @@ export default function ChatContainer(props) {
           apikey: 'Wn5P5FrSoPb1uJhb2t8TOI8gkpStUVPj',
         }
       }).then(async res => {
-        console.log();
         let rp1 = await createQuestion({
           history_id: id,
           content: text,
@@ -86,8 +79,10 @@ export default function ChatContainer(props) {
           url_audio_content: res.data.data.url,
           url_audio_answer: res.data.data.url
         })
+        // console.log(rp1);
         setInputChat('')
-        getChat();
+        setQuestion([rp1,...question])
+        // getChat();
 
         // console.lơog(rp1);
       }).catch(e => console.log(e))
@@ -126,18 +121,38 @@ export default function ChatContainer(props) {
     setIsCopy(true);
     setTimeout(setIsCopy(false),3000)
   };
+  const handleScroll = (event) =>{
+    var token = localStorage.getItem('token');
+    const target = event.target;
+    // console.log(target.scrollHeight - target.scrollTop)
+    // console.log(target.scrollHeight)
+    if (target.scrollHeight - target.scrollTop === target.scrollHeight && next_page_url !==null) {
+      axios.get(next_page_url,{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      }).then(res => {
+        setQuestion([...res.data.data,...question])
+        if(res.data.url_next_page !== null)
+        setNextPageUrl(res.data.url_next_page.replace('http://', 'https://'))
+        else setNextPageUrl(null)
+      })
+  }
+  }
   return (
     <div className='content-chat'>
        <div className='header1-chat'>
           <i onClick={() => { showMenu() }} type='button' className="fa-solid fa-list" ></i>
         </div>
-      <div className='Chatbox'>
+        {/* {console.log('ahiihh')} */}
+      <div className='Chatbox' onScroll={handleScroll}>
         {
-          question && question.map((item, index) => {
+          question && [...question].reverse().map((item, index) => {
 
             return (
               <div key={index}>
                 <div className='chat-user'>
+
                   <div className='chat-item'>
                     <div className='chatUser'>
                       <p ref={textRef}>{item.content}</p>
@@ -155,9 +170,12 @@ export default function ChatContainer(props) {
                   </div>
                 </div>
                 {
+
                   item.answer !== null ?
+                  
                     (<div className='chat-bot'>
                       <div className='chat-item'>
+
                         <div className='chatUser'>
                           <p ref={textRef1}>{item.answer}</p>
                         </div>
@@ -170,6 +188,7 @@ export default function ChatContainer(props) {
                               (<span onClick={()=>{copyTextBot()}} type='button'> <i className="fa-regular fa-clipboard"></i></span>)
                             }
                             <span>
+
                               {
                                 item.favorite === true ? 
                                 (<i type='button' onClick={()=>{handleLike(item._id,null)}} style={{color:'blue'}} className="fa-solid fa-thumbs-up"></i>) 
@@ -183,6 +202,7 @@ export default function ChatContainer(props) {
                                 : (<i type='button' onClick={()=>{handleLike(item._id,false)}} style={{color:'gray'}} className="fa-solid fa-thumbs-down"></i>)
                               }
                               </span>
+
                             <span type="button" onClick={() => {playAudio(item.url_audio_content)}}><img src={Audo}></img></span>
                           </div>
                           <div>

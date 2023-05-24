@@ -1,6 +1,6 @@
 import axios from 'axios'
 import createApiClient from "./apiService";
-const api = createApiClient(' http://127.0.0.1:5000/');
+const api = createApiClient('https://chatbotabc-l3ed-master-oteukwknoa-wm.a.run.app/');
 
 const getAllQuestion = async() => {
     return (await api.get('api/question')).data;

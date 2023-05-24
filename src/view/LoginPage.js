@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./Login.scss";
 // import { Routes, Route, Link } from "react-router-dom";
-import { useNavigate, useLocation, useParams, useHistory } from "react-router-dom";
+import { useNavigate, useLocation, useParams, useHistory, Navigate} from "react-router-dom";
 import Logo from "../assets/logo.svg";
 import Username from "../assets/user-octagon.svg";
 import Password from "../assets/frame.svg";
@@ -42,7 +42,7 @@ const SignIn = ({ HadaleRotuer }) => {
     res.then((res)=>{
       localStorage.setItem('token',res.data.token)
       localStorage.setItem('user_i',res.data.id)
-      navigate("/") // Điều hướng đến trang kế tiếp
+      navigate("/chat") // Điều hướng đến trang kế tiếp
       window.location.reload();
     })
     .catch(e=>{
@@ -68,7 +68,7 @@ const SignIn = ({ HadaleRotuer }) => {
               type="button"
               onClick={() => setEmail("")}
               style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}
-              class="fa-regular fa-circle-xmark"
+              className="fa-regular fa-circle-xmark"
             ></i>
           </div>
         </div>
@@ -101,7 +101,7 @@ const SignIn = ({ HadaleRotuer }) => {
           style={{ color: "white", fontSize: 16 }}
           type="button"
           onClick={() => {
-            HadaleRotuer("SignUp");
+            HadaleRotuer("Signup");
           }}
         >
           Sign up
@@ -112,6 +112,7 @@ const SignIn = ({ HadaleRotuer }) => {
 };
 
 const SignUp = ({ HadaleRotuer }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password_confirmation, setPasswordConf] = useState("");
@@ -123,7 +124,8 @@ const SignUp = ({ HadaleRotuer }) => {
       res.then(res => {
         localStorage.setItem('token',res.data.token)
         localStorage.setItem('user_i',res.data.id)
-        window.location.href("/")
+        navigate("/chat") // Điều hướng đến trang kế tiếp
+        window.location.reload();
       }).catch(e => {
         if(e.response.status === 422)
         setError(e.response.data)
@@ -145,7 +147,7 @@ const SignUp = ({ HadaleRotuer }) => {
              type="email" placeholder="Email" />
           <i
             style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}
-            class="fa-regular fa-circle-xmark"
+            className="fa-regular fa-circle-xmark"
           ></i>
         </div>
       </div>
@@ -207,6 +209,7 @@ export default function LoginPage(props) {
   const [password, setPassword] = useState("");
   const [isShowPassword, setisShowPassword] = useState(false);
   const [router, setRouter] = useState(params.params);
+  // console.log(router === "Signup");
   const handleLogin = async () => {
     let isValid = true;
     if (isValid) {
@@ -227,36 +230,40 @@ export default function LoginPage(props) {
   const handleShowHidenPassword = () => {
     setisShowPassword(!isShowPassword);
   };
-  return (
-    <div className="Content-login">
-      <div className="Background">
-        <div className="Ellipse1" />
-        <div className="Ellipse2" />
+  if(router !== 'Login' && router !== 'Signup'){
+    return (<Navigate to="/"/>)
+  }else{
+    return (
+      <div className="Content-login">
+        <div className="Background">
+          <div className="Ellipse1" />
+          <div className="Ellipse2" />
+        </div>
+        <div className="content">
+          <div className="page-in">
+            {router === "Signup" ? (
+              <SignUp HadaleRotuer={HadaleRotuer} />
+            ) : (
+              <SignIn HadaleRotuer={HadaleRotuer} />
+            )}
+          </div>
+          <div className="signup-content">
+            {router === "Signup" ? (
+              <SignUp HadaleRotuer={HadaleRotuer} />
+            ) : (
+              <Welcome />
+            )}
+          </div>
+          <div className="vertical-line"></div>
+          <div className="login-content">
+            {router === "Login" ? (
+              <SignIn HadaleRotuer={HadaleRotuer} />
+            ) : (
+              <Welcome />
+            )}
+          </div>
+        </div>
       </div>
-      <div className="content">
-        <div className="page-in">
-          {router === "SignUp" ? (
-            <SignUp HadaleRotuer={HadaleRotuer} />
-          ) : (
-            <SignIn HadaleRotuer={HadaleRotuer} />
-          )}
-        </div>
-        <div className="signup-content">
-          {router === "SignUp" ? (
-            <SignUp HadaleRotuer={HadaleRotuer} />
-          ) : (
-            <Welcome />
-          )}
-        </div>
-        <div className="vertical-line"></div>
-        <div className="login-content">
-          {router === "Login" ? (
-            <SignIn HadaleRotuer={HadaleRotuer} />
-          ) : (
-            <Welcome />
-          )}
-        </div>
-      </div>
-    </div>
-  );
+    );
+  }
 }

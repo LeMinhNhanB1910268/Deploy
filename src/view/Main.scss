@@ -228,7 +228,6 @@
                         border: none;
                         width: 236px;
                         height: 33px;
-                        
                         /* Inside auto layout */
 
                         flex: none;
@@ -290,11 +289,11 @@
                     animation: show-scrollbar 1s forwards;
                 }
                 .history-list{
-                    // position: absolute;
                     display: flex;
                     flex-direction: column;
                     width: 267px;
-                    height: 100%;
+                    height: calc(100% - 345px);
+                    margin-bottom: 200px !important;
                     // overflow: hidden;
                     animation: hide-scrollbar 2s linear 2s forwards;
                     overflow: auto;
