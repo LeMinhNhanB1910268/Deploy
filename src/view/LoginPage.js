@@ -3,8 +3,6 @@ import "./Login.scss";
 // import { Routes, Route, Link } from "react-router-dom";
 import { useNavigate, useLocation, useParams, useHistory, Navigate} from "react-router-dom";
 import Logo from "../assets/logo.svg";
-// import Username from "../assets/user-octagon.svg";
-// import Password from "../assets/frame.svg";
 import { Login, Register } from "../service/AuthService";
 import Typed from "typed.js";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,7 +14,6 @@ const Welcome = () => {
       typeSpeed: 50,
     });
     return () => {
-      // Destroy Typed instance during cleanup to stop animation
       typed.destroy();
     };
   });
@@ -35,6 +32,7 @@ const SignIn = ({ HadaleRotuer }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error_message,setError] = useState("");
+  const [isShowPassword,setisShowPassword] = useState(false);
   const HadaleLogin = (e)=>{
     e.preventDefault();
     const data = {email,password}
@@ -49,6 +47,9 @@ const SignIn = ({ HadaleRotuer }) => {
       if(e.response.status === 422)
       setError(e.response.data)
     })
+  }
+  const handleShowHidenPassword = () => {
+    setisShowPassword(!isShowPassword);
   }
   return (
     <>
@@ -75,16 +76,35 @@ const SignIn = ({ HadaleRotuer }) => {
         {error_message.email && error_message.email.map((m,i)=><p style={{color:'red',fontSize:12,marginBottom:2,marginTop:-1,width:350,textAlign:'start'}} key={i}>{m}</p>)}
         <div className="input-group">
           <div className="input-background">
-            <input
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              value={password}
-              style={{ width: "100%" }}
-              type="password"
-              placeholder="Password"
-            />
-            {/* <i style={{fontSize:20,marginTop:10,marginLeft: 10}} class="fa-regular fa-circle-xmark"></i> */}
+            {
+              isShowPassword ? 
+              (
+                <>
+                <input
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+                value={password}
+                style={{ width: "89%" }}
+                type="text"
+                placeholder="Password"
+              />
+              <i class="fa-sharp fa-regular fa-eye" onClick={()=>{handleShowHidenPassword()}} style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}></i></>) 
+              : (
+              <>
+              <input
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+                value={password}
+                style={{ width: "89%" }}
+                type="password"
+                placeholder="Password"
+              />
+              <i class="fa-regular fa-eye-slash" onClick={()=>{handleShowHidenPassword()}} style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}></i>
+              </>
+              )
+            }
           </div>
         </div>
         {error_message.password && error_message.password.map((m,i)=><p style={{color:'red',fontSize:12,marginBottom:2,marginTop:-1,width:350,textAlign:'start'}} key={i}>{m}</p>)}
@@ -117,6 +137,7 @@ const SignUp = ({ HadaleRotuer }) => {
   const [password, setPassword] = useState("");
   const [password_confirmation, setPasswordConf] = useState("");
   const [error_message,setError] = useState("")
+  const [isShowPassword,setisShowPassword] = useState(false);
   const HandleSignUp = (e)=>{
       e.preventDefault();
       const data = {email,password,password_confirmation}
@@ -131,6 +152,9 @@ const SignUp = ({ HadaleRotuer }) => {
         setError(e.response.data)
       })
     // console.log({email,password});
+  }
+  const handleShowHidenPassword = () => {
+    setisShowPassword(!isShowPassword);
   }
   return (
     <>
@@ -155,32 +179,73 @@ const SignUp = ({ HadaleRotuer }) => {
       {/* input password */}
       <div className="input-group">
         <div className="input-background">
-          <input
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            value={password} 
-            style={{ width: "100%" }}
-            type="password"
-            placeholder="Password"
-          />
-          {/* <i style={{fontSize:20,marginTop:10,marginLeft: 10}} class="fa-regular fa-circle-xmark"></i> */}
+        {
+              isShowPassword ? 
+              ( 
+                <>
+                <input
+                onChange={(e) => {
+                  setPasswordConf(e.target.value);
+                }}
+                value={password_confirmation} 
+                style={{ width: "89%" }}
+                type="text"
+                placeholder="Password"
+              />
+              <i class="fa-sharp fa-regular fa-eye" onClick={()=>{handleShowHidenPassword()}} style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}></i></>         
+              ):
+              (
+                <>
+                <input
+                onChange={(e) => {
+                  setPasswordConf(e.target.value);
+                }}
+                value={password_confirmation} 
+                style={{ width: "89%" }}
+                type="password"
+                placeholder="Password"
+              />
+              <i class="fa-regular fa-eye-slash" onClick={()=>{handleShowHidenPassword()}} style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}></i></>
+              )
+            }
+      
         </div>
       </div>
       {error_message.password && error_message.password.map((m,i)=><p style={{color:'red',fontSize:12,marginBottom:2,marginTop:-1,width:350,textAlign:'start'}} key={i}>{m}</p>)}
       {/* input password-conf */}
       <div className="input-group">
         <div className="input-background">
-          <input
-            onChange={(e) => {
-              setPasswordConf(e.target.value);
-            }}
-            value={password_confirmation} 
-            style={{ width: "100%" }}
-            type="password"
-            placeholder="Password"
-          />
-          {/* <i style={{fontSize:20,marginTop:10,marginLeft: 10}} class="fa-regular fa-circle-xmark"></i> */}
+      
+            {
+              isShowPassword ? 
+              ( 
+                <>
+                <input
+                onChange={(e) => {
+                  setPasswordConf(e.target.value);
+                }}
+                value={password_confirmation} 
+                style={{ width: "89%" }}
+                type="text"
+                placeholder="Password"
+              />
+             </>         
+              ):
+              (
+                <>
+                <input
+                onChange={(e) => {
+                  setPasswordConf(e.target.value);
+                }}
+                value={password_confirmation} 
+                style={{ width: "89%" }}
+                type="password"
+                placeholder="Password"
+              />
+             </>
+              )
+            }
+
         </div>
       </div>
       {error_message.password && error_message.password.map((m,i)=><p style={{color:'red',fontSize:12,marginBottom:2,marginTop:-1,width:350,textAlign:'start'}} key={i}>{m}</p>)}

@@ -75,7 +75,7 @@
             } 
             .sider-bar{
                 box-sizing: border-box;
-
+               
                 /* Auto layout */   
 
                 display: flex;
@@ -90,7 +90,7 @@
                 left: 0px;
                 top: 100px;
 
-                background: #FFFFFF;
+                background: none;
                 border-right: 1px solid #E6EAEE;
                 .group-btn {
                     display: flex;
@@ -197,7 +197,7 @@
                     }
                    
                 }
-                .setting{
+                .logout{
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
@@ -206,6 +206,49 @@
                     padding: 9px 16px;
                     gap: 10px;
 
+                    width: 268px;
+                    height: 51px;
+
+                    background: #F4F5FA;
+                    border-radius: 10px;
+                    // margin-top: 150px;
+                    /* Inside auto layout */
+
+                    flex: none;
+                    order: 1;
+                    align-self: stretch;
+                    flex-grow: 0;
+    
+                    .btn-logout{
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        padding: 0px;
+                        gap: 15px;
+                        border: none;
+                        background: none;
+                        width: 236px;
+                        height: 33px;
+                        /* Inside auto layout */
+
+                        flex: none;
+                        order: 0;
+                        align-self: stretch;
+                        flex-grow: 0;
+                        // i{
+                        //     margin-right: 10px;
+                        // }
+                    }
+                }
+                .setting{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-start;
+                    // align-self: e;
+                    padding: 9px 16px;
+                    gap: 10px;
+                    margin-top: 10px;
                     width: 268px;
                     height: 51px;
 
@@ -229,7 +272,7 @@
                         width: 236px;
                         height: 33px;
                         /* Inside auto layout */
-
+                        background: none;
                         flex: none;
                         order: 0;
                         align-self: stretch;
@@ -289,16 +332,18 @@
                     animation: show-scrollbar 1s forwards;
                 }
                 .history-list{
+                    position: relative;
                     display: flex;
                     flex-direction: column;
                     width: 267px;
-                    height: calc(100% - 345px);
-                    margin-bottom: 200px !important;
+                    height: calc(100% - 245px);
+                    margin-bottom: 50px !important;
                     // overflow: hidden;
                     animation: hide-scrollbar 2s linear 2s forwards;
                     overflow: auto;
                     scrollbar-width: thin;
                     scrollbar-color: gray white;
+                    
                     // left: 17px;
                     // top: 229px;
                     // background: rgba(220, 216, 216, 0.04);

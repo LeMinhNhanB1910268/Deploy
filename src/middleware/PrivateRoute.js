@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react';
 import { Route, Navigate } from 'react-router-dom';
 import { CheckLogin } from "../service/AuthService";
+import Loading from '../view/Loading';
 const PrivateRoute = ({ path, element:Element,next_page_url,Add_History,getHistorys,History,setHistory}) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   // console.log(History);
@@ -20,7 +21,7 @@ const PrivateRoute = ({ path, element:Element,next_page_url,Add_History,getHisto
     }
   };
   if(isAuthenticated === null){
-      return <div></div>
+      return <Loading></Loading>
   }else{
       if (isAuthenticated) {
           return <Element setHistory={setHistory} next_page_url={next_page_url} Add_History={Add_History} getHistorys ={getHistorys} History={History}/>;

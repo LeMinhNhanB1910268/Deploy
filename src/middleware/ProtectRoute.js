@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react';
 import { Navigate,useParams } from 'react-router-dom';
 import { CheckHistory } from "../service/AuthService";
+import Loading1 from "../view/Loading/Loading1";
 const ProtectRoute = ({ path, element:Element,next_page_url,Add_History,getHistorys,History,setHistory}) => {
   const params = useParams();
   const {id} = params;
@@ -23,7 +24,7 @@ const ProtectRoute = ({ path, element:Element,next_page_url,Add_History,getHisto
     }
   };
   if(isAuthenticated === null){
-      return <div></div>
+      return <Loading1></Loading1>
   }else{
       if (isAuthenticated) {
           return <Element />;

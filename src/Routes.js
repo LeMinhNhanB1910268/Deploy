@@ -7,6 +7,8 @@ import Welcome from "./components/Welcome";
 import PrivateRoute from "./middleware/PrivateRoute";
 import ProtectRoute from "./middleware/ProtectRoute"
 import WelcomePage from"./view/WelcomePage"
+import Loading from "./view/Loading";
+import Notfound from "./view/Loading/Notfound";
 import { createHistory, getHistory} from '../src/service/historyService';
 
 import axios from "axios";
@@ -63,6 +65,8 @@ function Router() {
                  <Route path='/chat/' element={<Welcome Add_History={Add_History} getHistorys ={getHistorys}/>} />
                  <Route path='/chat/history/:id' element={<ProtectRoute element={ChatContainer}/>} />
             </Route>
+            {/* <Route path="/loading" element = {<Loading />}/> */}
+            <Route path='*' element = {<Notfound/>}/>
         </Routes>
     )
 }

@@ -14,15 +14,9 @@ const Main = (props) => {
   const [ID] = useState(localStorage.getItem("user_i"));
   const [InputEdit, setInputEdit] = useState("");
   const [IsEdit, setIsEdit] = useState(false);
-  // const getHistorys = async () => {
-  //   let rp = await getHistory(ID);
-  //   setArrHistory(rp);
-  //   console.log(rp);
-  // };
-  useEffect(() => {
-    // getPeople();
+  const [IsDelete, setIsDelete] = useState(false);
 
-    // getHistorys();
+  useEffect(() => {
     const SpeechRecognition =
       window.SpeechRecognition ||
       window.webkitSpeechRecognition ||
@@ -88,15 +82,27 @@ const Main = (props) => {
       props.getHistorys()
     }
   }
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_i')
+    navigate('/')
+  }
   const handleScroll = (event) => {
     const target = event.target;
-    // console.log(target.scrollHeight - target.scrollTop)
-    // console.log(target.clientHeight)
     if (target.scrollHeight - target.scrollTop === target.clientHeight) {
-      // Đã cuộn tới cuối, xử lý tại đây
-      // console.log('a');
       props.Add_History()
     }
+  }
+  const handleClickDelete = () => {
+    setIsDelete(true);
+  }
+  const deleteHis = async (id) => {
+    deleteHistory(id)
+    .then((res) => {
+      props.setHistory(props.History.filter(history => history._id !== id));
+      navigate("/chat");
+    })
+    .catch((e) => console.log(e));
   }
   return (
     <div className="content-main">
@@ -195,28 +201,25 @@ const Main = (props) => {
                               {item.title}
                             </p>)}
                               {
-                                IsEdit ? (
+                                IsEdit &&
                                   <>
                                     <i onClick={()=>{UpdateName(item._id)}}  className="fa-solid fa-check"></i>
                                     <i onClick={()=>{setIsEdit(false)}} className="fa-solid fa-xmark"></i>
                                   </>
-                                ) :
-                                (
+                              }
+                              {
+                                IsDelete &&
+                                      <>
+                                        <i onClick={()=>{deleteHis(item._id)}}  className="fa-solid fa-check"></i>
+                                        <i onClick={()=>{setIsDelete(false)}} className="fa-solid fa-xmark"></i>
+                                      </>
+
+                              }
+                              { !IsDelete && !IsEdit &&
                                   <>
-                                  <i className="fa-sharp fa-solid fa-pen" onClick={()=>{handleClickEdit(item.title)}}></i>
-                                  <i
-                                    onClick={() => {
-                                      deleteHistory(item._id)
-                                        .then((res) => {
-                                          props.setHistory(props.History.filter(history => history._id !== item._id));
-                                          navigate("/chat");
-                                        })
-                                        .catch((e) => console.log(e));
-                                    }}
-                                    color="gray"
-                                    className="fa-solid fa-trash"
-                                  ></i></>
-                                )
+                                    <i className="fa-sharp fa-solid fa-pen" onClick={()=>{handleClickEdit(item.title)}}></i>
+                                    <i color="gray" className="fa-solid fa-trash" onClick={()=>{handleClickDelete()}}></i>
+                                  </>
                               }
                           </button>
                         ) : (
@@ -254,7 +257,12 @@ const Main = (props) => {
                     );
                   })}
             </div>
-
+            <div className="logout justify-content-end">
+              <button onClick={()=>{handleLogout()}} className="btn-logout">
+                <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>Logout</span>
+              </button>
+            </div>
             <div className="setting justify-content-end">
               <button className="btn-setting">
                 <i className="fa-solid fa-gear"></i>
