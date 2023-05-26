@@ -32,7 +32,7 @@ const SignIn = ({ HadaleRotuer }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error_message, setError] = useState("");
-  const [isShowPassword, setisShowPassword] = useState(false);
+  const [isShowPassword, setisShowPassword] = useState('password');
   const HadaleLogin = (e) => {
     e.preventDefault();
     const data = { email, password }
@@ -186,7 +186,7 @@ const SignUp = ({ HadaleRotuer }) => {
                   setPasswordConf(e.target.value);
                 }}
                 value={password_confirmation}
-                style={{ width: "89%" }}
+                style={{ width: "95%" }}
                 type={isShowPassword}
                 placeholder="Password"
               />
