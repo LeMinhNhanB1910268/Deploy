@@ -37,6 +37,9 @@
             border-radius: 20px;
             padding: 10px;
             min-width: 400px;
+            @media (max-width: 500px) {
+                min-width: 100%;
+            }
         .chatUser{
             // width:fit-content;
             word-wrap: break-word;
@@ -66,9 +69,13 @@
 
         }
     }
-
-    .chat-bot{
-        margin-top: 30px;
+    .message-bot{
+        display: flex;
+        flex-direction: row;
+        padding-top: 30px;
+        .chat-bot{
+        // margin-top: 30px;
+        margin-left: 5px;
         text-align: start;
         background-color: #FFFFFF;
         border-radius: 0px 15px 15px 15px;
@@ -77,6 +84,9 @@
         // border-radius: 20px;
         padding: 10px;
         min-width: 400px;
+        @media (max-width: 500px) {
+            min-width: calc(100% - 30px);
+        }
         .operation{
             display: flex;
             flex-direction: column;
@@ -103,60 +113,66 @@
             flex-direction: row; 
         }
     }
-    .footer-chat{
-        height: 130px;
-        position: absolute;
-        width: calc(100%  - 320px) ;
-        margin: 10px;
-        border: 1px solid #E6EAEE;
-        // border: 1px solid #666666;
-        background: linear-gradient(to bottom, #FAFAFD , #FFFFFF);
-        display: flex;
-        // z-index:-2;
-        border-radius: 10px;
-        justify-content: center;
-        align-items: center;
-        @media (max-width: 768px) {
-            width: calc(100% - 20px);
-        }
+    }
+    .footer-custom{
 
-        .chat{    
-            // position: absolute;
-            border: 1px solid #F5F5f5;
+        .footer-chat{
+            height: 130px;
+            position: absolute;
+            width: calc(100%  - 320px) ;
+            margin: 10px;
+            border: 1px solid #E6EAEE;
+            // border: 1px solid #666666;
+            background: linear-gradient(to bottom, #FAFAFD , #FFFFFF);
             display: flex;
-            border-radius: 15px;
-            height: 50px;
-            color: rgb(82 82 82/var(--tw-text-opacity));
-            // width: 250px;
-            margin-top: 30px;
-            padding: 5px;
-            bottom: 30px;
-            // left: 30%;
-            width: 90%;
-            background-color: white;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            img{
-                padding: 10px;
-                width: 40px;
-                height: 40px;
+            // z-index:-2;
+            border-radius: 10px;
+            justify-content: center;
+            align-items: center;
+            @media (max-width: 768px) {
+                width: calc(100% - 20px);
             }
-            .input-chat {
-                border: none;
-                outline: none;
-                color: rgb(44, 44, 44);
-                padding: 5px;
-                resize: none;
-                // word-wrap: break-word;
-                // padding: 10px;
-                width: 100%;    
-                // max-width: calc(100% - 71.14px);
-                // max-width: 100%;
-            }
-            .group-button{
+    
+            .chat{    
+                // position: absolute;
+                border: 1px solid #F5F5f5;
                 display: flex;
-                // flex-basis: 1;
-                flex-direction: row;
-                width: 71.14px;
+                border-radius: 10px;
+                height: 50px;
+                color: rgb(82 82 82/var(--tw-text-opacity));
+                // width: 250px;
+                margin-top: 30px;
+                padding: 5px;
+                bottom: 30px;
+                // left: 30%;
+                width: 90%;
+                background-color: white;
+                // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                filter: drop-shadow(0px 2px 5px #D9D9D9);
+                i{
+                    padding: 10px;
+                    width: 40px;
+                    height: 40px;
+                    color: #ccc;
+                }
+                .input-chat {
+                    border: none;
+                    outline: none;
+                    color: rgb(44, 44, 44);
+                    padding: 5px;
+                    resize: none;
+                    // word-wrap: break-word;
+                    // padding: 10px;
+                    width: 100%;    
+                    // max-width: calc(100% - 71.14px);
+                    // max-width: 100%;
+                }
+                .group-button{
+                    display: flex;
+                    // flex-basis: 1;
+                    flex-direction: row;
+                    width: 71.14px;
+                }
             }
         }
     }

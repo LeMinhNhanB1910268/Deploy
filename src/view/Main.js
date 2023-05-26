@@ -125,8 +125,9 @@ const Main = (props) => {
               onClick={() => {
                 closeMenu();
               }}
-              type="button"
-              className="icon-close fa-solid fa-chevron-left"
+              style={{fontSize:25,marginRight: 16}}
+               type="button"
+              className="fa-sharp fa-solid fa-xmark"
             ></i>
           </div>
           <div className="sider-bar">
@@ -195,6 +196,8 @@ const Main = (props) => {
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
                                 width: 150,
+                                // height:20,
+                                whiteSpace: 'nowrap',
                                 WebkitLineClamp: 1,
                               }}
                             >
@@ -246,6 +249,8 @@ const Main = (props) => {
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
                                 width: 170,
+                                
+                                whiteSpace: "nowrap",
                                 WebkitLineClamp: 1,
                               }}
                             >

@@ -147,7 +147,7 @@ export default function ChatContainer(props) {
           Authorization: `Bearer ${token}`
         }
       }).then(res => {
-        setQuestion([...res.data.data,...question])
+        setQuestion([...question,...res.data.data])
         if(res.data.url_next_page !== null)
         setNextPageUrl(res.data.url_next_page.replace('http://', 'https://'))
         else setNextPageUrl(null)
@@ -157,7 +157,8 @@ export default function ChatContainer(props) {
   return (
     <div className='content-chat'>
        <div className='header1-chat'>
-          <i onClick={() => { showMenu() }} type='button' className="fa-solid fa-list" ></i>
+          <i onClick={() => { showMenu() }} type='button' className="fa-sharp fa-solid fa-bars" ></i>
+          {/* <i class="fa-sharp fa-solid fa-bars"></i> */}
         </div>
         {/* {console.log('ahiihh')} */}
       <div className='Chatbox' onScroll={handleScroll}>
@@ -175,11 +176,11 @@ export default function ChatContainer(props) {
                     <hr className='space'></hr>
                     <div className='operation'>
                       <div className='ahuhu'>
-                        <span onClick={()=>{copyTextUser()}}><i className="fa-regular fa-clipboard"></i></span>
-                        <span type="button" onClick={() => { playAudio(item.url_audio_content) }}><img src={Audo}></img></span>
+                        <span onClick={()=>{copyTextUser()}}><i style={{color:'gray'}} className="fa-solid fa-clipboard"></i></span>
+                        <span type="button" onClick={() => { playAudio(item.url_audio_content) }}><i style={{color:'gray'}} className="fa-solid fa-volume-high"></i></span>
                       </div>
                       <div>
-                        <p style={{fontSize:12,color: '#ccc'}}>{'thời gian'}</p>
+                        <p style={{fontSize:12,color: '#ccc'}}>{new Date(item.created_at).toISOString()}</p>
                       </div>
                     </div>
                   </div>
@@ -187,8 +188,13 @@ export default function ChatContainer(props) {
                 {
 
                   item.answer !== null ?
-                  
-                    (<div className='chat-bot'>
+                
+                    (<div className='message-bot'>
+                      <div style={{display:'flex',justifyContent:'center',alignItems:'center',borderRadius: '50%',width:30,height:30 ,minWidth:30 , minHeight: 30 ,background:'white'}}>
+                        <i class="fa-solid fa-robot"></i>
+                      </div>
+                    <div className='chat-bot'>
+                      
                       <div className='chat-item'>
 
                         <div className='chatUser'>
@@ -200,7 +206,7 @@ export default function ChatContainer(props) {
                             {
                               IsCopy ? 
                               (<span><p>Copied</p><i className="fa-regular fa-clipboard"></i></span>):
-                              (<span onClick={()=>{copyTextBot()}} type='button'> <i className="fa-regular fa-clipboard"></i></span>)
+                              (<span onClick={()=>{copyTextBot()}} type='button'> <i style={{color: 'gray'}} className="fa-solid fa-clipboard"></i></span>)
                             }
                             <span>
 
@@ -218,21 +224,24 @@ export default function ChatContainer(props) {
                               }
                               </span>
 
-                            <span type="button" onClick={() => {playAudio(item.url_audio_content)}}><img src={Audo}></img></span>
+                            <span type="button" onClick={() => {playAudio(item.url_audio_content)}}><i style={{color:'gray'}} className="fa-solid fa-volume-high"></i></span>
                           </div>
                           <div>
-                            <p style={{fontSize:12,color: '#ccc'}}>{'thời gian'}</p>
+                            <p style={{fontSize:12,color: '#ccc'}}>{new Date(item.created_at).toISOString()}</p>
                           </div>
                         </div>
                       </div>
-                    </div>) : null
+                    </div>
+                    </div>
+                    ) : null
                 }
               </div>
             )
           })
         }
       </div>
-      <div className='footer-chat'>
+      <div className='footer-custom'>
+         <div className='footer-chat'>
         <div className='chat'>
         <textarea className='input-chat'
           maxLength={10000}
@@ -260,11 +269,21 @@ export default function ChatContainer(props) {
           value={InputChat}>
         </textarea>
         <div className='group-button'>
-          <img src={Micro} onClick={() => { startListening() }}></img>
-          <img src={Send} onClick={() => { handleSendChat() }}></img>
+          
+          <i class="fa-solid fa-microphone" onClick={() => { startListening() }}></i>
+          {
+            InputChat ? (<i style={{color:'black'}} type="button" className="fa-solid fa-paper-plane"  onClick={() => { handleSendChat() }}></i>)
+            :
+            (<i className="fa-solid fa-paper-plane"></i>)
+          }
+          
+          {/* <img src={Micro} onClick={() => { startListening() }}></img>
+          <img src={Send} onClick={() => { handleSendChat() }}></img> */}
         </div>
       </div>
       </div>
+      </div>
+     
       
     </div>
   )

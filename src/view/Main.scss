@@ -51,12 +51,21 @@
                 }
             .logo{
                 font-size: 30px;
+                padding: 10px;
+                width: calc(300px - 12.5px);
+                @media (max-width: 500px) {
+                    img{
+                        width: 50px;
+                        height: 50px;
+                    }
+                }
                 span{
                     font-weight: 600;
+                    font-size: 24px;
                 }
             }
             .icon-close{
-                margin-left: 50px;
+                // margin-left: 50px;
                 font-size: 20px;
                 @media (min-width: 768px) {
                     display: none !important;
@@ -343,7 +352,9 @@
                     overflow: auto;
                     scrollbar-width: thin;
                     scrollbar-color: gray white;
-                    
+                    @media (max-width:768px) {
+                        animation: none;
+                    }
                     // left: 17px;
                     // top: 229px;
                     // background: rgba(220, 216, 216, 0.04);
@@ -395,6 +406,12 @@
                         width: 250px;
                         height: 45px;
                         border-radius: 5px;
+                        // color: "black";
+                        // overflow: "hidden";
+                        // text-overflow: "ellipsis";
+                        // width: 170;
+                        // white-space: "nowrap";
+                        // -webkit-line-clamp: 1;
                         border: 0px solid #FFFFFF;
                         background: #F4F5FA;
                         /* Inside auto layout */

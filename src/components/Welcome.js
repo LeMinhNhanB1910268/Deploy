@@ -40,7 +40,6 @@ export default function (props) {
         }
       }).then(async res => {
         // console.log
-
         let response = await createHistory({title: InputChat, user_id: ID})
         let rp1 = await createQuestion({
           history_id: response._id,
@@ -74,13 +73,7 @@ export default function (props) {
   return (
     <div className="content-welcome">
       <div className="header-chat">
-        <i
-          onClick={() => {
-            showMenu();
-          }}
-          type="button"
-          className="fa-solid fa-list"
-        ></i>
+      <i onClick={() => { showMenu() }} type='button' className="fa-sharp fa-solid fa-bars" ></i>
       </div>
       <div className="title">
         <div className="row">
