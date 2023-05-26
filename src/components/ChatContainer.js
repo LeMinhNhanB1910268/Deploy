@@ -15,24 +15,29 @@ export default function ChatContainer(props) {
   const [InputChat, setInputChat] = useState('');
   const [next_page_url,setNextPageUrl] = useState('');
   const [recognition, setRecognition] = useState(null);
+  const [scrollEnd,setScrollEnd] =useState(true)
   const params = useParams();
   // const [ID] = useState(localStorage.getItem('userID'))
   const [IsCopy, setIsCopy] = useState(false);
   const { id } = params;
   // console.log(id);
-  useEffect(() => {
-    var objDiv = document.querySelector(".Chatbox")
-    var scrollHeight = objDiv.scrollHeight;
-    objDiv.scrollTop = scrollHeight;  
-  }, [question])
+  // useEffect(() => {
+  //   var objDiv = document.querySelector(".Chatbox")
+  //   var scrollHeight = objDiv.scrollHeight;
+  //   objDiv.scrollTop = scrollHeight;  
+  // }, [question])
+
   useEffect(() => { 
     if (id) {
       // getAHistory();
       getChat();
     }
   }, [id])
-
+  
   useEffect(()=>{
+    var objDiv = document.querySelector(".Chatbox")
+    var scrollHeight = objDiv.scrollHeight;
+    objDiv.scrollTop = scrollHeight;
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition;
   
     if (!SpeechRecognition) {
@@ -50,12 +55,21 @@ export default function ChatContainer(props) {
 
     setRecognition(recognitionInstance);
   },[])
+  useEffect(() => {
+    if(scrollEnd === true){
+      var objDiv = document.querySelector(".Chatbox")
+      var scrollHeight = objDiv.scrollHeight;
+      objDiv.scrollTop = scrollHeight;  
+    }
+    setScrollEnd(false)
+  }, [scrollEnd])
   const getChat = async () => {
     let rp = await getQuestion(id);
     setQuestion(rp.data)
     if(rp.url_next_page !== null)
     setNextPageUrl(rp.url_next_page.replace('http://', 'https://'))
     else setNextPageUrl(null)
+    setScrollEnd(true)
   }
  
   const playAudio = (url) => {
@@ -82,6 +96,7 @@ export default function ChatContainer(props) {
         // console.log(rp1);
         setInputChat('')
         setQuestion([rp1,...question])
+        setScrollEnd(true)
         // getChat();
 
         // console.lơog(rp1);
