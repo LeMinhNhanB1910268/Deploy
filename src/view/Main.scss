@@ -1,11 +1,13 @@
 .content-main{
-    height: 100vh;
+    height: 100%;
     left: 0;
     top: 0;
+    width: 100%;
     bottom: 0;
     overflow: hidden;
     padding-left: 10px;
-
+    position: fixed;
+    
     .row{
         padding: 0px !important;
         display:flex;

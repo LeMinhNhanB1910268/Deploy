@@ -37,7 +37,7 @@ export default function Notfound() {
         setTimeout(doAction, 3000);
     }
     return (
-        <div>
+        <div className='notfound'>
             <div className="huhu">
                 <div className="image">
                     <div className="farme-rb">

@@ -30,7 +30,7 @@ function Router() {
         setHistory([obj,...History])
     }
     const get_next_page_histoty = () =>{
-        console.log('a');
+        // console.log('a');
         const token = localStorage.getItem('token');
         if(next_page_url!==null){
             axios.get(next_page_url,{
@@ -38,7 +38,7 @@ function Router() {
                     Authorization: `Bearer ${token}`
                 }
             }).then((res)=>{
-                    console.log(res.data)
+                    // console.log(res.data)
                     setHistory([...History,...res.data.data])
                     // console.log(res.data.url_next_pag)
                     if(res.data.url_next_page !== null)

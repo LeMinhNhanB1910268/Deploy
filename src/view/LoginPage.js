@@ -73,7 +73,7 @@ const SignIn = ({ HadaleRotuer }) => {
             ></i>
           </div>
         </div>
-        {error_message.email && error_message.email.map((m, i) => <p style={{ color: 'red', fontSize: 12, marginBottom: 2, marginTop: -1, width: 350, textAlign: 'start' }} key={i}>{m}</p>)}
+        {error_message.email && error_message.email.map((m, i) => <p className="message-error" key={i}>{m}</p>)}
         <div className="input-group">
           <div className="input-background">
             <input
@@ -90,7 +90,7 @@ const SignIn = ({ HadaleRotuer }) => {
             }
           </div>
         </div>
-        {error_message.password && error_message.password.map((m, i) => <p style={{ color: 'red', fontSize: 12, marginBottom: 2, marginTop: -1, width: 350, textAlign: 'start' }} key={i}>{m}</p>)}
+        {error_message.password && error_message.password.map((m, i) => <p className="message-error" key={i}>{m}</p>)}
         <div className="forgot-password-text">
           <p>Recover Password ?</p>
         </div>
@@ -158,7 +158,7 @@ const SignUp = ({ HadaleRotuer }) => {
             ></i>
           </div>
         </div>
-        {error_message.email && error_message.email.map((m, i) => <p style={{ color: 'red', fontSize: 12, marginBottom: 2, marginTop: -1, width: 350, textAlign: 'start' }} key={i}>{m}</p>)}
+        {error_message.email && error_message.email.map((m, i) => <p className="message-error" key={i}>{m}</p>)}
         {/* input password */}
         <div className="input-group">
           <div className="input-background">
@@ -176,7 +176,7 @@ const SignUp = ({ HadaleRotuer }) => {
             }
           </div>
         </div>
-        {error_message.password && error_message.password.map((m, i) => <p style={{ color: 'red', fontSize: 12, marginBottom: 2, marginTop: -1, width: 350, textAlign: 'start' }} key={i}>{m}</p>)}
+        {error_message.password && error_message.password.map((m, i) => <p className="message-error" key={i}>{m}</p>)}
         {/* input password-conf */}
         <div className="input-group">
           <div className="input-background">
@@ -193,7 +193,7 @@ const SignUp = ({ HadaleRotuer }) => {
             </>
           </div>
         </div>
-        {error_message.password && error_message.password.map((m, i) => <p style={{ color: 'red', fontSize: 12, marginBottom: 2, marginTop: -1, width: 350, textAlign: 'start' }} key={i}>{m}</p>)}
+        {error_message.password && error_message.password.map((m, i) => <p className="message-error" key={i}>{m}</p>)}
         <div style={{ marginTop: 10 }} className="submit-btn">
           <button>Sign up</button>
         </div>
