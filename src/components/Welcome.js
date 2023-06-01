@@ -143,7 +143,7 @@ export default function Welcome(props) {
               setInputChat(event.target.value);
               var textarea = document.querySelector(".input-chat");
               var div = textarea.parentElement;
-              console.log(textarea.scrollHeight);
+              // console.log(textarea.scrollHeight);
               if (textarea.scrollHeight > 46 && textarea.scrollHeight < 100)
                 div.style.height = textarea.scrollHeight + "px";
               if (event.target.value === "") {

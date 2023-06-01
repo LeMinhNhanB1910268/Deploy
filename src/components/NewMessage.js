@@ -66,7 +66,7 @@ export default function NewMessage({ question, AddQuestion ,history_id,setScroll
                             background: "white",
                         }}
                     >
-                        <i class="fa-solid fa-robot"></i>
+                        <i className="fa-solid fa-robot"></i>
                     </div>
                     <div className="chat-bot">
                         <div className="chat-item">
