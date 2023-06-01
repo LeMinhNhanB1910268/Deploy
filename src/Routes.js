@@ -8,6 +8,7 @@ import PrivateRoute from "./middleware/PrivateRoute";
 import ProtectRoute from "./middleware/ProtectRoute"
 import WelcomePage from"./view/WelcomePage"
 import Loading from "./view/Loading";
+import Dashboard from "./view/Dashboard";
 import Notfound from "./view/Loading/Notfound";
 import { createHistory, getHistory} from '../src/service/historyService';
 
@@ -67,6 +68,7 @@ function Router() {
             </Route>
             {/* <Route path="/loading" element = {<Loading />}/> */}
             <Route path='*' element = {<Notfound/>}/>
+            <Route path='/dashboard' element = {<Dashboard/>}/>
         </Routes>
     )
 }

@@ -141,8 +141,13 @@
 
             .chatUser {
                 // width:fit-content;
+                display: flex;
+                flex-direction: row;
                 word-wrap: break-word;
                 overflow-x: auto;
+                .typed-cursor{
+                    display: none;
+                }
             }
 
             img,

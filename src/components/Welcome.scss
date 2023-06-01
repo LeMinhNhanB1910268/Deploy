@@ -22,6 +22,191 @@
             font-size: 25px;
         }
     }
+    .Chatbox {
+        height: calc(100% - 200px);
+        // minheight: 800px;
+        // padding-bottom: 300px;
+        width: calc(100% - 10px);
+        padding: 10px;
+        overflow: auto;
+
+        @media (min-width: 768px) {
+            height: calc(100% - 150px);
+        }
+    }
+
+    .chat-user {
+        .chat-item {
+            background-color: #FFFFFF;
+            max-width: calc(100% - 550px);
+            margin-left: auto;
+            margin-top: 30px;
+            width: fit-content;
+            text-align: end;
+            border-radius: 20px;
+            padding: 10px;
+            min-width: 400px;
+
+            @media (max-width: 500px) {
+                min-width: 100%;
+            }
+
+            .chatUser {
+                // width:fit-content;
+                word-wrap: break-word;
+                overflow-x: auto;
+            }
+
+            .space {
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+
+            .operation {
+                text-align: start;
+                padding: 10px;
+
+                i {
+                    font-size: 14px;
+                }
+
+                img,
+                i {
+                    color: black;
+                    width: 14px;
+                    height: 14px;
+                    margin: 10px;
+                }
+
+                .ahuhu {
+                    display: flex;
+                    flex-direction: row;
+                    .tool-tip{
+                        position: relative;
+                        display: inline-block;
+                        .tooltiptext {
+                            visibility: hidden;
+                            width: 120px;
+                            background-color: black;
+                            color: #fff;
+                            text-align: center;
+                            border-radius: 6px;
+                            padding: 5px 0;
+                            position: absolute;
+                            z-index: 1;
+                            top: 100%;
+                            left: 50%;
+                            margin-left: -60px;
+                          }
+                          .tooltiptext::after {
+                            content: "";
+                            position: absolute;
+                            bottom: 100%;
+                            left: 50%;
+                            margin-left: -5px;
+                            border-width: 5px;
+                            border-style: solid;
+                            border-color: transparent transparent black transparent;
+                          }
+                    }
+                    .tool-tip:active .tooltiptext {
+                        visibility: visible;
+                    }
+                }
+            }
+
+        }
+    }
+
+    .message-bot {
+        display: flex;
+        flex-direction: row;
+        padding-top: 30px;
+
+        .chat-bot {
+            // margin-top: 30px;
+            margin-left: 5px;
+            text-align: start;
+            background-color: #FFFFFF;
+            border-radius: 0px 15px 15px 15px;
+            width: fit-content;
+            max-width: calc(100% - 550px);
+            // border-radius: 20px;
+            padding: 10px;
+            min-width: 400px;
+
+            @media (max-width: 500px) {
+                min-width: calc(100% - 30px);
+            }
+
+            .operation {
+                display: flex;
+                flex-direction: column;
+                justify-self: flex-end;
+                align-items: flex-end;
+            }
+
+            .chatUser {
+                // width:fit-content;
+                display: flex;
+                flex-direction: row;
+                word-wrap: break-word;
+                overflow-x: auto;
+                .typed-cursor{
+                    display: none;
+                }
+            }
+
+            img,
+            i {
+                color: black;
+                width: 14px;
+                height: 14px;
+                margin: 10px;
+            }
+
+            i {
+                font-size: 14px;
+
+            }
+
+            .ahuhu {
+                display: flex;
+                flex-direction: row;
+                .tool-tip{
+                    position: relative;
+                    display: inline-block;
+                    .tooltiptext {
+                        visibility: hidden;
+                        width: 120px;
+                        background-color: black;
+                        color: #fff;
+                        text-align: center;
+                        border-radius: 6px;
+                        padding: 5px 0;
+                        position: absolute;
+                        z-index: 1;
+                        top: 100%;
+                        left: 50%;
+                        margin-left: -60px;
+                      }
+                      .tooltiptext::after {
+                        content: "";
+                        position: absolute;
+                        bottom: 100%;
+                        left: 50%;
+                        margin-left: -5px;
+                        border-width: 5px;
+                        border-style: solid;
+                        border-color: transparent transparent black transparent;
+                      }
+                }
+                .tool-tip:active .tooltiptext {
+                    visibility: visible;
+                }
+            }
+        }
+    }
     .title{
         display: flex;
         margin: 0px 10px;

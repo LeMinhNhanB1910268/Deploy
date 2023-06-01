@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import "./ChatContainer.scss";
 import { getQuestion, updateLike } from "../service/questionService";
 import { createQuestion } from "../service/questionService";
+import {AnswerOpenAI} from "../service/Answer";
 import axios from "axios";
 import Modal from "./Modal";
-
+import NewMessage from "./NewMessage";
+import { TextSpeechZaloAI } from "../service/Text_Speech";
 export default function ChatContainer(props) {
   const [question, setQuestion] = useState("");
   const [playing_audio_id,setPlaying] = useState("");
@@ -15,7 +17,9 @@ export default function ChatContainer(props) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [audio, setAudio] = useState();
   const [scrollEnd, setScrollEnd] = useState(true);
+  const [newQuestion , setNewQuestion] = useState(null)
   const params = useParams();
+  
   const { id } = params;
   useEffect(() => {
     if (id) {
@@ -67,45 +71,53 @@ export default function ChatContainer(props) {
     setScrollEnd(true);
   };
 
-  const playAudio = (url,id) => {
-    const Audio_obj = new Audio(url);
-    Audio_obj.addEventListener("ended", () => {
-      setAudio("");// Thực hiện hành động sau khi âm thanh kết thúc
-    });
-    Audio_obj.play();
-    setAudio(Audio_obj);
+  const playAudio = async (url,content) => {
+    // if (content.length > 400) 
+    //   content = content.slice(0, 499);
+    // if(url!==""){
+      const Audio_obj = new Audio(url);
+      Audio_obj.addEventListener("ended", () => {
+        setAudio("");
+      });
+      Audio_obj.play();
+      setAudio(Audio_obj);
+    // }else{
+    //   const res = await TextSpeechZaloAI(content)
+    //   console.log("url", res.data.url);
+    //   const Audio_obj = new Audio(res.data.url);
+    //   Audio_obj.addEventListener("ended", () => {
+    //     setAudio("");// Thực hiện hành động sau khi âm thanh kết thúc
+    //   });
+    //   Audio_obj.play();
+    //   setAudio(Audio_obj);
+    // }
   };
   const StopAudio = () => {
     audio.pause();
     setAudio("");
   };
+  const AddQuestion = async (data) =>{
+    const res = await createQuestion(data);
+    // console.log(res); 
+    setQuestion([res,...question])
+    setNewQuestion(null)
+    setScrollEnd(true)
+    return res;
+  }
   const handleSendChat = async () => {
+    // setInputChat('')
     const text = InputChat;
-    const formdata = new URLSearchParams();
-    formdata.append("input", text);
-    axios
-      .post("https://api.zalo.ai/v1/tts/synthesize", formdata, {
-        headers: {
-          apikey: "Wn5P5FrSoPb1uJhb2t8TOI8gkpStUVPj",
-        },
-      })
-      .then(async (res) => {
-        let rp1 = await createQuestion({
-          history_id: id,
-          content: text,
-          answer: text,
-          url_audio_content: res.data.data.url,
-          url_audio_answer: res.data.data.url,
-        });
-        // console.log(rp1);
-        setInputChat("");
-        setQuestion([rp1, ...question]);
-        setScrollEnd(true);
-        // getChat();
-
-        // console.lơog(rp1);
-      })
-      .catch((e) => console.log(e));
+    const obj = {content:text ,answer: ''}
+    setInputChat('');
+    setScrollEnd(true);
+    setNewQuestion(obj)
+    const data = {"model": "gpt-3.5-turbo",
+    "messages": [{"role": "user", "content": text}],
+    "max_tokens": 499
+    }
+    const response = await AnswerOpenAI(data)
+    setNewQuestion({content:text ,answer: response.choices[0].message.content})
+    setScrollEnd(true);
   };
   const startListening = () => {
     if (recognition) {
@@ -207,14 +219,14 @@ export default function ChatContainer(props) {
             type="button"
             className="fa-sharp fa-solid fa-bars"
           ></i>
-          {/* <i class="fa-sharp fa-solid fa-bars"></i> */}
+
         </div>
         {/* {console.log('ahiihh')} */}
         <div className="Chatbox" onScroll={handleScroll}>
           {question &&
             [...question].reverse().map((item, index) => {
               return (
-                <div key={index}>
+                  <div key={index} >
                   <div className="chat-user">
                     <div className="chat-item">
                       <div className="chatUser">
@@ -241,7 +253,7 @@ export default function ChatContainer(props) {
                             type="button"
                             onClick={() => {
                               // console.log(!audio)
-                              if (!audio) playAudio(item.url_audio_content);
+                              if (!audio) playAudio(item.url_audio_content,item.content);
                               else StopAudio();
                             }}
                           >
@@ -281,7 +293,7 @@ export default function ChatContainer(props) {
                           background: "white",
                         }}
                       >
-                        <i class="fa-solid fa-robot"></i>
+                        <i className="fa-solid fa-robot"></i>
                       </div>
                       <div className="chat-bot">
                         <div className="chat-item">
@@ -352,7 +364,7 @@ export default function ChatContainer(props) {
                               <span
                                 type="button"
                                 onClick={() => {
-                                  if (!audio) playAudio(item.url_audio_content);
+                                  if (!audio) playAudio(item.url_audio_answer,item.answer);
                                   else StopAudio();
                                 }}
                               >
@@ -382,6 +394,7 @@ export default function ChatContainer(props) {
                 </div>
               );
             })}
+          {newQuestion && <NewMessage AddQuestion={AddQuestion} question={newQuestion} history_id = {id.toString()} setScrollEnd={setScrollEnd}/>}
         </div>
         <div className="footer-custom">
           <div className="footer-chat">
@@ -392,6 +405,7 @@ export default function ChatContainer(props) {
                 placeholder="Type your message...."
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
+                    e.preventDefault();
                     var textarea = document.querySelector(".input-chat");
                     var div = textarea.parentElement;
                     div.style.height = "50px";
@@ -413,7 +427,7 @@ export default function ChatContainer(props) {
               ></textarea>
               <div className="group-button">
                 <i
-                  class="fa-solid fa-microphone"
+                  className="fa-solid fa-microphone"
                   onClick={() => {
                     startListening();
                   }}

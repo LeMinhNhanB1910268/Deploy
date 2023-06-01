@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./Welcome.scss";
 import { createHistory, getAllHistory } from "../service/historyService";
+import Modal from "./Modal";
+import NewMessage from "./NewMessage";
+import {AnswerOpenAI} from "../service/Answer";
 import { createQuestion } from "../service/questionService";
-import axios from "axios";
-import Micro from "../assets/micro.svg";
-import Send from "../assets/send.svg";
 import { useNavigate } from "react-router-dom";
 export default function Welcome(props) {
   const navigate = useNavigate();
   const [InputChat, setInputChat] = useState("");
+  const [newQuestion, setNewQuestion] = useState(null);
+  const [history_id, setHistoryID] = useState('');
   const [ID] = useState(localStorage.getItem("user_i"));
   const [recognition, setRecognition] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   useEffect(() => {
     const SpeechRecognition =
       window.SpeechRecognition ||
@@ -35,38 +38,44 @@ export default function Welcome(props) {
     setRecognition(recognitionInstance);
   }, []);
   const handleSendChat = async () => {
-    // props.handleNewHitory();
-    const formdata = new URLSearchParams();
-    formdata.append("input", InputChat);
-    axios
-      .post("https://api.zalo.ai/v1/tts/synthesize", formdata, {
-        headers: {
-          apikey: "Wn5P5FrSoPb1uJhb2t8TOI8gkpStUVPj",
-        },
-      })
-      .then(async (res) => {
-        // console.log
-        let response = await createHistory({ title: InputChat, user_id: ID });
-        let rp1 = await createQuestion({
-          history_id: response._id,
-          content: InputChat,
-          answer: InputChat,
-          url_audio_content: res.data.data.url,
-          url_audio_answer: res.data.data.url,
-        });
-        if (response) {
-          setInputChat("");
-          props.Add_History(response);
-          navigate("/chat/history/" + response._id);
-        }
-      })
-      .catch((e) => console.log(e));
+    let res = await createHistory({ title: InputChat, user_id: ID });
+    setHistoryID(res._id)
+    const text = InputChat;
+    const obj = { content: text, answer: '' }
+    setInputChat('');
+    // setScrollEnd(true);
+    setNewQuestion(obj)
+    const data = {
+      "model": "gpt-3.5-turbo",
+      "messages": [{ "role": "user", "content": text }],
+      "max_tokens": 499
+    }
+    const response = await AnswerOpenAI(data)
+    setNewQuestion({ content: text, answer: response.choices[0].message.content })
+    props.Add_History(res)
+    // setScrollEnd(true);
   };
+
   const startListening = () => {
     if (recognition) {
       recognition.start();
+      setModalIsOpen(true);
     }
   };
+  const stopListening = () => {
+    if (recognition) {
+      recognition.stop();
+      setModalIsOpen(false);
+    }
+  };
+  const AddQuestion = async (data) =>{
+    const res = await createQuestion(data);
+    return res;
+    // console.log(res); 
+    // setQuestion([res,...question])
+    // setNewQuestion(null)
+    // setScrollEnd(true)
+  }
   const showMenu = () => {
     // console.log('a');
     const menu = document.querySelector(".col-2");
@@ -79,6 +88,11 @@ export default function Welcome(props) {
   };
   return (
     <div className="content-welcome">
+      <Modal
+        modalIsOpen={modalIsOpen}
+        transcript={InputChat}
+        stopListening={stopListening}
+      ></Modal>
       <div className="header-chat">
         <i
           onClick={() => {
@@ -88,22 +102,29 @@ export default function Welcome(props) {
           className="fa-sharp fa-solid fa-bars"
         ></i>
       </div>
-      <div className="title">
-        <div className="row">
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <h1>Welcome to ChatABC</h1>
+      {!newQuestion ?
+        (<div className="title">
+          <div className="row">
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <h1>Welcome to ChatABC</h1>
+            </div>
+            <div className="col-4">
+              <span>Example</span>
+            </div>
+            <div className="col-4">
+              <span>Example</span>
+            </div>
+            <div className="col-4">
+              <span>Example</span>
+            </div>
           </div>
-          <div className="col-4">
-            <span>Example</span>
+        </div>)
+        :
+        (
+          <div className="Chatbox" >
+            {newQuestion && <NewMessage AddQuestion={AddQuestion} question={newQuestion} history_id={history_id} setScrollEnd={null} />}
           </div>
-          <div className="col-4">
-            <span>Example</span>
-          </div>
-          <div className="col-4">
-            <span>Example</span>
-          </div>
-        </div>
-      </div>
+        )}
       <div className="footer-chat">
         <div className="chat">
           {/* <form onSubmit={(e)=>handleSendChat(e)}> */}
@@ -134,13 +155,13 @@ export default function Welcome(props) {
           {/* </form> */}
           <div className="group-button">
             <i
-              class="fa-solid fa-microphone"
+              className="fa-solid fa-microphone"
               type="button"
               onClick={() => {
                 startListening();
               }}
             ></i>
-            {InputChat !=="" ? (
+            {InputChat !== "" ? (
               <i
                 style={{ color: "black" }}
                 type="button"

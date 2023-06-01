@@ -86,7 +86,7 @@ const SignIn = ({ HadaleRotuer }) => {
               placeholder="Password"
             />
             {
-              isShowPassword === 'text' ? <i class="fa-sharp fa-regular fa-eye" onClick={() => { handleShowHidenPassword() }} style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}></i> : <i class="fa-regular fa-eye-slash" onClick={() => { handleShowHidenPassword() }} style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}></i>
+              isShowPassword === 'text' ? <i className="fa-sharp fa-regular fa-eye" onClick={() => { handleShowHidenPassword() }} style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}></i> : <i className="fa-regular fa-eye-slash" onClick={() => { handleShowHidenPassword() }} style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}></i>
             }
           </div>
         </div>
@@ -172,7 +172,7 @@ const SignUp = ({ HadaleRotuer }) => {
               placeholder="Password"
             />
             {
-              isShowPassword === 'text' ? <i class="fa-sharp fa-regular fa-eye" onClick={() => { handleShowHidenPassword() }} style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}></i> : <i class="fa-regular fa-eye-slash" onClick={() => { handleShowHidenPassword() }} style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}></i>
+              isShowPassword === 'text' ? <i className="fa-sharp fa-regular fa-eye" onClick={() => { handleShowHidenPassword() }} style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}></i> : <i className="fa-regular fa-eye-slash" onClick={() => { handleShowHidenPassword() }} style={{ fontSize: 20, marginTop: 10, marginLeft: 10 }}></i>
             }
           </div>
         </div>
