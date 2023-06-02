@@ -7,7 +7,8 @@ const TextSpeechZaloAI = async(data) => {
     formdata.append("input", data);
     return (await axios.post('https://api.zalo.ai/v1/tts/synthesize',formdata,{
         headers:{
-            apikey: process.env.REACT_APP_API_KEY_ZALO
+            // apikey: process.env.REACT_APP_API_KEY_ZALO
+            apikey: "Wn5P5FrSoPb1uJhb2t8TOI8gkpStUVPj"
         }
     })).data
 }

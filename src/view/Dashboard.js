@@ -1,8 +1,16 @@
-import React from 'react'
+import React, { useEffect,useState } from 'react'
 import './Dashboard.scss'
 import Logo from '../assets/logo1.svg'
 import Avatar from '../assets/avatar.webp'
+import { getCountLike, getCountDislike, getCountUser, getCountQuestion } from '../service/Tk'
 export default function dashboard() {
+    const [ArrLike, setArrLike] = useState("");
+    const [ArrDislike, setArrDislike] = useState("");
+    const [ArrUser, setArrUser] = useState("");
+    const [ArrQuestion, setArrQuestion] = useState("");
+    useEffect(()=>{
+        getLike();
+    },[])
     document.addEventListener('DOMContentLoaded', function () {
         const chart = Highcharts.chart('container', {
             chart: {
@@ -32,70 +40,6 @@ export default function dashboard() {
         });
     });
     document.addEventListener('DOMContentLoaded', function () {
-        // const chart =  Highcharts.chart('container1', {
-        //     chart: {
-        //         plotBackgroundColor: null,
-        //         plotBorderWidth: null,
-        //         plotShadow: false,
-        //         type: 'pie'
-        //       },
-        //       title: {
-        //         text: 'Browser market shares in May, 2020',
-        //         align: 'left'
-        //       },
-        //       tooltip: {
-        //         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        //       },
-        //       accessibility: {
-        //         point: {
-        //           valueSuffix: '%'
-        //         }
-        //       },
-        //       plotOptions: {
-        //         pie: {
-        //           allowPointSelect: true,
-        //           cursor: 'pointer',
-        //           dataLabels: {
-        //             enabled: true,
-        //             format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-        //           }
-        //         }
-        //       },
-        //       series: [{
-        //         name: 'Brands',
-        //         colorByPoint: true,
-        //         data: [{
-        //           name: 'Chrome',
-        //           y: 70.67,
-        //           sliced: true,
-        //           selected: true
-        //         }, {
-        //           name: 'Edge',
-        //           y: 14.77
-        //         },  {
-        //           name: 'Firefox',
-        //           y: 4.86
-        //         }, {
-        //           name: 'Safari',
-        //           y: 2.63
-        //         }, {
-        //           name: 'Internet Explorer',
-        //           y: 1.53
-        //         },  {
-        //           name: 'Opera',
-        //           y: 1.40
-        //         }, {
-        //           name: 'Sogou Explorer',
-        //           y: 0.84
-        //         }, {
-        //           name: 'QQ',
-        //           y: 0.51
-        //         }, {
-        //           name: 'Other',
-        //           y: 2.6
-        //         }]
-        //       }]
-        //   });
         const chart = Highcharts.chart('container1', {
             chart: {
                 type: 'pie',
@@ -120,7 +64,16 @@ export default function dashboard() {
             }]
         });
     });
-
+    const getLike = async () => {
+        let rp = await getCountLike({
+            from : '2023-05-01',
+            to : '2023-05-31'
+        });
+        if(rp) {
+            setArrLike(rp)
+        }
+        console.log(rp.total)
+    }
   return (
     <div className='dashboard'>
         <div className='dashboard-menu'>
@@ -142,7 +95,7 @@ export default function dashboard() {
                     </div>
                     <div className='menu-dashboard-top-item'>
                         <div className="dropdown">
-                            <button className="dropdown-toggle">Theo ngày</button>
+                            <button className="dropdown-toggle">Theo tháng</button>
                             <ul className="dropdown-menu">
                                 <li><a href="#">Theo ngày</a></li>
                                 <li><a href="#">Theo tuần</a></li>
@@ -166,7 +119,7 @@ export default function dashboard() {
                                     <span>Like</span>
                                 </div>
                                 <div className='count-btn'>
-                                    <span>500</span>
+                                   { ArrLike && <span>{ArrLike.total}</span>}
                                 </div>
                             </div>
                         </div>
@@ -181,7 +134,7 @@ export default function dashboard() {
                                     <span>Dislike</span>
                                 </div>
                                 <div className='count-btn'>
-                                    <span>500</span>
+                                    <span>{ArrLike.total}</span>
                                 </div>
                             </div>
                         </div>
