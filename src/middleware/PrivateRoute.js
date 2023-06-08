@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react';
 import { Route, Navigate } from 'react-router-dom';
 import { CheckLogin } from "../service/AuthService";
 import Loading from '../view/Loading';
-const PrivateRoute = ({ path, element:Element,next_page_url,Add_History,getHistorys,History,setHistory}) => {
+const PrivateRoute = ({ path, element:Element,next_page_url,Add_History,getHistorys,History,setHistory,renderChild}) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   // console.log(History);
   useEffect(() => {
@@ -24,7 +24,7 @@ const PrivateRoute = ({ path, element:Element,next_page_url,Add_History,getHisto
       return <Loading></Loading>
   }else{
       if (isAuthenticated) {
-          return <Element setHistory={setHistory} next_page_url={next_page_url} Add_History={Add_History} getHistorys ={getHistorys} History={History}/>;
+          return <Element renderChild = {renderChild} setHistory={setHistory} next_page_url={next_page_url} Add_History={Add_History} getHistorys ={getHistorys} History={History}/>;
       } else {
           return <Navigate to="/auth/Login" />;
       }

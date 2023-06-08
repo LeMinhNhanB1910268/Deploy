@@ -17,7 +17,10 @@ import axios from "axios";
 function Router() {
     const [History,setHistory ]= useState('');
     const [next_page_url,setURL] = useState(null);
-    // const [IsLoggedIn ,setIsLoggedIn] = useState(false)
+    const [render ,setRender] = useState(false)
+    const RenderChild =()=>{
+        setRender(!render)
+    }
     const getHistorys = async () => {
         const id = localStorage.getItem('user_i')
         let rp = await getHistory(id);
@@ -62,8 +65,8 @@ function Router() {
             <Route path="/" element = {<WelcomePage />}/>
             <Route path='/auth/:params' element= {<LoginPage />}/>
             {/* <Route path='/sign-up' element={<SignUp />}/> */}
-            <Route path='/chat' element={<PrivateRoute setHistory={setHistory} next_page_url={next_page_url} Add_History={get_next_page_histoty} getHistorys ={getHistorys} History={History} element={Main}/>}>
-                 <Route path='/chat/' element={<Welcome Add_History={Add_History} getHistorys ={getHistorys}/>} />
+            <Route path='/chat' element={<PrivateRoute setHistory={setHistory} next_page_url={next_page_url} Add_History={get_next_page_histoty} renderChild = {RenderChild} getHistorys ={getHistorys} History={History} element={Main}/>}>
+                 <Route path='/chat/' element={<Welcome Add_History={Add_History} getHistorys ={getHistorys} render={render}/> } />
                  <Route path='/chat/history/:id' element={<ProtectRoute element={ChatContainer}/>} />
             </Route>
             {/* <Route path="/loading" element = {<Loading />}/> */}

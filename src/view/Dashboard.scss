@@ -3,8 +3,9 @@
     justify-content: center;
     flex-direction: row;
     background-color: #eff0f6;
-    height: 100vh;
+    height: 100%;
     width: 100%;
+    position: fixed;
     // padding-right: 6px;
     .dashboard-menu{
         margin-right: 10px;

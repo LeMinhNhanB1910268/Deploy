@@ -8,71 +8,212 @@ export default function dashboard() {
     const [ArrDislike, setArrDislike] = useState("");
     const [ArrUser, setArrUser] = useState("");
     const [ArrQuestion, setArrQuestion] = useState("");
+    const [StartDate, setStartDate] =useState('');
+    const [EndDate,setEndDate] = useState('')
     useEffect(()=>{
-        getLike();
+        if(EndDate && StartDate){
+            setArrLike("")
+            setArrDislike("")
+            setArrQuestion("")
+            setArrUser("")
+            getLike();
+            getQuestion();
+            getDisLike();
+            getUser();
+        }
+    },[StartDate,EndDate])
+    useEffect(()=>{
+        handleSetDate(2);
     },[])
-    document.addEventListener('DOMContentLoaded', function () {
-        const chart = Highcharts.chart('container', {
+    useEffect(()=>{
+        if(ArrLike !== "" && ArrQuestion !== "" && ArrUser !== "" && ArrDislike !== ""){
+        let datalike = [];
+        let dataquestion = [];
+        let datadislike = [];
+        let datauser = [];
+        for(let i = 0 ; i < ArrLike.results.length; i++){
+            datalike.push(ArrLike.results[i].count);
+            dataquestion.push(ArrQuestion.results[i].count)
+            datadislike.push(ArrDislike.results[i].count);
+            datauser.push(ArrUser.results[i].count);
+        }
+        const chartOptions1 = {
+          title: {
+            text: "Thống kê số lượng tương tác trong tháng",
+            align: "left",
+          },
+
+          yAxis: {
+            title: {
+              text: "Số lượng",
+            },
+          },
+
+          xAxis: {
+            accessibility: {
+              rangeDescription: "Range: 1 to 31",
+            },
+          },
+
+          legend: {
+            layout: "vertical",
+            align: "right",
+            verticalAlign: "middle",
+          },
+
+          plotOptions: {
+            series: {
+              label: {
+                connectorAllowed: false,
+              },
+              pointStart: 1,
+            },
+          },
+
+          series: [
+            {
+              name: "Like",
+              data: datalike,
+            },
+            {
+              name: "Questions",
+              data: dataquestion,
+            },
+            {
+              name: "Dislike",
+              data: datadislike,
+            },
+            {
+              name: "User",
+              data: datauser,
+            },
+          ],
+
+          responsive: {
+            rules: [
+              {
+                condition: {
+                  maxWidth: 500,
+                },
+                chartOptions: {
+                  legend: {
+                    layout: "horizontal",
+                    align: "center",
+                    verticalAlign: "bottom",
+                  },
+                },
+              },
+            ],
+          },
+        };
+      
+          const chartOptions2 = {
             chart: {
-                type: 'area',
-                contextMenu: {
-                    enabled: true  // Bật Context Menu
-                }
+              type: 'pie',
+              contextMenu: {
+                enabled: true
+              }
             },
             title: {
-                text: 'Fruit Consumption'
+              text: 'Fruit Consumption'
             },
             xAxis: {
-                categories: ['Apples', 'Bananas', 'Oranges']
+              categories: ['Apples', 'Bananas', 'Oranges']
             },
             yAxis: {
-                title: {
-                    text: 'Fruit eaten'
-                }
+              title: {
+                text: 'Fruit eaten'
+              }
             },
-            series: [{
+            series: [
+              {
                 name: 'Jane',
                 data: [1, 0, 4]
-            }, {
-                name: 'John',
-                data: [5, 7, 3]
-            }]
-        });
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-        const chart = Highcharts.chart('container1', {
-            chart: {
-                type: 'pie',
-                contextMenu: {
-                    enabled: true  // Bật Context Menu
-                }
-            },
-            title: {
-                text: 'Fruit Consumption'
-            },
-            xAxis: {
-                categories: ['Apples', 'Bananas', 'Oranges']
-            },
-            yAxis: {
-                title: {
-                    text: 'Fruit eaten'
-                }
-            },
-            series: [{
-                name: 'Jane',
-                data: [1, 0, 4]
-            }]
-        });
-    });
+              }
+            ]
+          };
+      
+          const chart1 = Highcharts.chart('container', chartOptions1);
+          const chart2 = Highcharts.chart('container1', chartOptions2);
+      
+          return () => {
+            chart1.destroy();
+            chart2.destroy();
+          };
+        }
+    },[ArrLike,ArrQuestion,ArrUser,ArrDislike])
     const getLike = async () => {
         let rp = await getCountLike({
-            from : '2023-05-01',
-            to : '2023-05-31'
+            from : StartDate,
+            to : EndDate
         });
         if(rp) {
             setArrLike(rp)
+            return rp;
         }
-        console.log(rp.total)
+        // console.log(rp.total)
+    }
+    const getDisLike = async () => {
+        let rp = await getCountDislike({
+            from : StartDate,
+            to : EndDate
+        });
+        if(rp) {
+            setArrDislike(rp)
+            return rp;
+        }
+        // console.log(rp.total)
+    }
+    const getUser = async () => {
+        let rp = await getCountUser({
+            from : StartDate,
+            to : EndDate
+        });
+        if(rp) {
+            setArrUser(rp)
+            return rp;
+        }
+        // console.log(rp.total)
+    }
+    const getQuestion = async () => {
+        let rp = await getCountQuestion({
+            from : StartDate,
+            to : EndDate
+        });
+        if(rp) {
+            setArrQuestion(rp)
+            return rp;
+        }
+        // console.log(rp.total)
+    }
+    const handleSetDate =(option)=>{
+        const today = new Date();
+        if(option === 1){
+            setStartDate(today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate())
+            setEndDate(today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate())
+        }
+        if (option === 2) {
+            let dayOfWeek = today.getDay();
+            if (dayOfWeek === 0) {
+                dayOfWeek = 1;
+            }
+            // Lấy ngày đầu tuần (ngày thứ Hai)
+            const startOfWeek = new Date(today.setDate(today.getDate() - dayOfWeek));
+            // Lấy ngày cuối tuần (ngày Chủ Nhật)
+            const endOfWeek = new Date(today.setDate(today.getDate() - dayOfWeek + 6));
+
+            setStartDate(startOfWeek.getFullYear()+"-"+(startOfWeek.getMonth()+1)+"-"+startOfWeek.getDate())
+            setEndDate(endOfWeek.getFullYear()+"-"+(endOfWeek.getMonth()+1)+"-"+endOfWeek.getDate())
+        }
+        if (option === 3) {
+            // const today = new Date();
+            // Lấy ngày đầu tháng
+            const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);    
+            // Lấy ngày kết thúc tháng
+            const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            setStartDate(startOfMonth.getFullYear()+"-"+(startOfMonth.getMonth()+1)+"-"+startOfMonth.getDate())
+            setEndDate(endOfMonth.getFullYear()+"-"+(endOfMonth.getMonth()+1)+"-"+endOfMonth.getDate())
+        }
     }
   return (
     <div className='dashboard'>
@@ -97,9 +238,9 @@ export default function dashboard() {
                         <div className="dropdown">
                             <button className="dropdown-toggle">Theo tháng</button>
                             <ul className="dropdown-menu">
-                                <li><a href="#">Theo ngày</a></li>
-                                <li><a href="#">Theo tuần</a></li>
-                                <li><a href="#">Theo tháng</a></li>
+                                <li onClick={()=>{handleSetDate(1)}}><a href="#">Theo ngày</a></li>
+                                <li onClick={()=>{handleSetDate(2)}} ><a>Theo tuần</a></li>
+                                <li onClick={()=>{handleSetDate(3)}}><a href="#">Theo tháng</a></li>
                             </ul>
                         </div>
                         <div className='avatar'>
@@ -134,7 +275,7 @@ export default function dashboard() {
                                     <span>Dislike</span>
                                 </div>
                                 <div className='count-btn'>
-                                    <span>{ArrLike.total}</span>
+                                    {ArrDislike && <span>{ArrDislike.total}</span>}
                                 </div>
                             </div>
                         </div>
@@ -149,7 +290,7 @@ export default function dashboard() {
                                     <span>Message</span>
                                 </div>
                                 <div className='count-btn'>
-                                    <span>500</span>
+                                {ArrQuestion && <span>{ArrQuestion.total}</span>}
                                 </div>
                             </div>
                         </div>
@@ -164,7 +305,7 @@ export default function dashboard() {
                                     <span>Member</span>
                                 </div>
                                 <div className='count-btn'>
-                                    <span>500</span>
+                                   {ArrUser && <span>{ArrUser.total}</span>}
                                 </div>
                             </div>
                         </div>
@@ -180,7 +321,7 @@ export default function dashboard() {
                                         <span>Like</span>
                                     </div>
                                     <div className='count-btn'>
-                                        <span>500</span>
+                                        {ArrLike && <span>{ArrLike.total}</span>}
                                     </div>
                                 </div>
                             </div>
@@ -195,7 +336,7 @@ export default function dashboard() {
                                         <span>Dislike</span>
                                     </div>
                                     <div className='count-btn'>
-                                        <span>500</span>
+                                        {ArrDislike && <span>{ArrDislike.total}</span>}
                                     </div>
                                 </div>
                             </div>
@@ -212,7 +353,7 @@ export default function dashboard() {
                                         <span>Message</span>
                                     </div>
                                     <div className='count-btn'>
-                                        <span>500</span>
+                                    {ArrQuestion && <span>{ArrQuestion.total}</span>}
                                     </div>
                                 </div>
                             </div>
@@ -227,7 +368,7 @@ export default function dashboard() {
                                         <span>Member</span>
                                     </div>
                                     <div className='count-btn'>
-                                        <span>500</span>
+                                    {ArrUser && <span>{ArrUser.total}</span>}
                                     </div>
                                 </div>
                             </div>

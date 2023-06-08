@@ -112,7 +112,7 @@ export default function ChatContainer(props) {
     setScrollEnd(true);
     setNewQuestion(obj)
     const data = {"model": "gpt-3.5-turbo",
-    "messages": [{"role": "user", "content": text}],
+    "messages": [{"role": "user", "content": "trả lời tôi "+text+"? và cho tôi biết câu hỏi thuộc chủ dề nào trong các chủ đề sau:\n1. chính trị\n2. du lịch\n3. lịch sử\n4. nghệ thuật\n5. công nghệ\n6. nông nghiệp\n7. kinh tế\n8. y tế\n9. môi trường\n10. tình cảm\n11. thiên văn\n12. động vật\n13. thực vật\n14. học tập\n15. khác "}],
     "max_tokens": 499
     }
     const response = await AnswerOpenAI(data)
@@ -230,7 +230,7 @@ export default function ChatContainer(props) {
                   <div className="chat-user">
                     <div className="chat-item">
                       <div className="chatUser">
-                        <p>{item.content}</p>
+                        <p style={{ whiteSpace: 'pre-line' }}>{item.content}</p>
                       </div>
                       <hr className="space"></hr>
                       <div className="operation">
@@ -298,7 +298,7 @@ export default function ChatContainer(props) {
                       <div className="chat-bot">
                         <div className="chat-item">
                           <div className="chatUser">
-                            <p>{item.answer}</p>
+                            <p style={{ whiteSpace: 'pre-line' }}>{item.answer}</p>
                           </div>
                           <hr className="space"></hr>
                           <div className="operation">

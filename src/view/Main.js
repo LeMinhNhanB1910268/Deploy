@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate  } from "react-router-dom";
 import "./Main.scss";
 import Logo from "../assets/logo1.svg";
 import {
@@ -13,7 +13,7 @@ const Main = (props) => {
   const [InputEdit, setInputEdit] = useState("");
   const [IsEdit, setIsEdit] = useState("");
   const [IsDelete, setIsDelete] = useState("");
-
+  
   useEffect(() => {
     const SpeechRecognition =
       window.SpeechRecognition ||
@@ -153,11 +153,13 @@ const Main = (props) => {
                 />
               </div>
               <div className="btn">
-                <Link to={"/chat"}>
-                  <button className="btn-add">
+                  <button onClick={()=>{
+                    props.renderChild(true)
+                    // props.renderChild(false)
+                    navigate('/chat')
+                  }} className="btn-add">
                     Thêm đoạn chat <i className="fa-solid fa-plus"></i>
                   </button>
-                </Link>
               </div>
             </div>
             <div style={{ width: 266 }}>
