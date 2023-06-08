@@ -7,11 +7,12 @@ export default function NewMessage({ question, AddQuestion , history_id ,setScro
     const navigate = useNavigate();
     useEffect(async () => {
         if (question.answer !== '') {
-            const sentences = question.answer.split(". ");
-            const Index = question.answer.lastIndexOf(sentences[sentences.length - 1]);
+            const sentences = question.answer.split(".");
+            const Index = question.answer.lastIndexOf(sentences[sentences.length - 2]);
             const Answer = question.answer.substring(0, Index).trim();
-            const answerIndex = sentences[sentences.length - 1].lastIndexOf("thuộc chủ đề");
-            const topic = sentences[sentences.length - 1].substring(answerIndex + "thuộc chủ đề".length).trim();
+            // console.log(sentences[sentences.length - 2])
+            const answerIndex = sentences[sentences.length - 2].lastIndexOf("thuộc chủ đề");
+            const topic = sentences[sentences.length - 2].substring(answerIndex + "thuộc chủ đề".length).trim();
             const typed = new Typed(answer.current, {
                 strings: [Answer],
                 typeSpeed: 10,
@@ -27,6 +28,7 @@ export default function NewMessage({ question, AddQuestion , history_id ,setScro
                         answer = Answer.slice(0,400);
                     const audio_question = await TextSpeechZaloAI(content)
                     const audio_answer = await TextSpeechZaloAI(answer)
+                    
                     const data = {
                         history_id: history_id,
                         topic: topic,
