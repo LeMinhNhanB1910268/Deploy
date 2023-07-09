@@ -1,5 +1,5 @@
 import createApiClient from "./apiService";
-const api = createApiClient('https://chatbotabc-l3ed-master-oteukwknoa-wm.a.run.app/');
+const api = createApiClient('https://grimy-orange-zd6p-master-nelm6assaa-wm.a.run.app/');
 
 const getCountLike = async (data) => {
     return (await api.post('api/count_like',data)).data
